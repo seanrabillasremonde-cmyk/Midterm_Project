@@ -1,6 +1,8 @@
-﻿using Student_Management;
+using Student_Management;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Xml.Linq;
 
 class Program
 {
@@ -9,16 +11,20 @@ class Program
 
         string mainFolder = Path.Combine(
        Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-       "SchoolSyst" 
-   );
-        for (int i = 0; i < 10; i++) for (int g = 0; g < 10; g++)
-        { 
-          string studentSubjectFile =  Path.Combine(mainFolder, $"StudentSubject{i}.txt");
-          string gradeFile = Path.Combine(mainFolder, $"Grades{i}.txt");                      
-                      
-          bool running = true;
-          string Menu;
-           Console.Clear();
+       "SchoolSyst" // The name of the folder  EnterGradesvariable
+
+
+   );             
+                                             
+            {                                  
+                string studentSubjectFile = Path.Combine(mainFolder, $"StudentSubject.txt"); // <--- The name of the file EnterGradesvariable
+
+
+                string gradeFile = Path.Combine(mainFolder, $"Grades.txt"); // <--- The name of the file EnterGradesvariable
+
+                bool running = true;
+                string Menu;
+                Console.Clear();
                 while (running)
                 {
                     Console.WriteLine("\n+===== Main   Menu ======+");
@@ -97,6 +103,7 @@ class Program
 
                         case "6":
                             running = false;
+                            return;
                             break;
 
                         default:
@@ -111,14 +118,14 @@ class Program
                     Console.SetCursorPosition(0, 0);
                     Console.ReadKey();
                 }
-        }
+            }
     }
 
     // =========================
     // 1 REGISTER STUDENT
     // =========================
 
-    static void RegisterStudent(string file)
+    static void RegisterStudent(string file) // the string variable file is use for connecting to EnrollSubject  
     {
         List<student> students = new List<student>();
         Console.Clear();
@@ -137,7 +144,7 @@ class Program
         string birth = Console.ReadLine();
 
         Console.Write("Age: ");
-          if(!int.TryParse(Console.ReadLine(), out int age))
+        if (!int.TryParse(Console.ReadLine(), out int age))
         {
             Console.WriteLine("Error not number please try again");
             System.Threading.Thread.Sleep(800);
@@ -150,7 +157,7 @@ class Program
         string address = Console.ReadLine();
 
         Console.Write("Contact Number: ");
-        if (!int.TryParse(Console.ReadLine(), out int contact)) 
+        if (!int.TryParse(Console.ReadLine(), out int contact))
         {
             Console.WriteLine("Error not number please try again");
             System.Threading.Thread.Sleep(800);
@@ -172,20 +179,20 @@ class Program
             age_old = age,
             loaction_adress = address,
             contact_number = contact,
-            COURSE = course 
+            COURSE = course
 
         };
         students.Clear();
         students.Add(s);
 
 
-        using (StreamWriter writer = new StreamWriter(file, true))
+        using (StreamWriter writer = new StreamWriter(file, true)) // And this file will be use to connect in RegisterStudent
         {
-            foreach (var connect in students )
+            foreach (var connect in students)
             {
                 writer.WriteLine("===== STUDENT =====");
-                writer.WriteLine($"Name:{( connect.first_name) + " " } {(connect.middle_name) + " " }  {(connect.last_name)}");
-                writer.WriteLine("Birthdate: " +connect.year_birth);
+                writer.WriteLine($"\rName:{(connect.first_name) + ""} {(connect.middle_name) + ""}  {(connect.last_name)}");
+                writer.WriteLine("Birthdate: " + connect.year_birth);
                 writer.WriteLine("Age: " + connect.age_old);
                 writer.WriteLine("Address: " + connect.loaction_adress);
                 writer.WriteLine("Contact: " + connect.contact_number);
@@ -210,7 +217,7 @@ class Program
     // 2 ENROLL SUBJECT
     // =========================
 
-    static void EnrollSubject(string file)
+    static void EnrollSubject(string file) // the string variable file is use for recording RegisterStudent   
     {
         Console.Clear();
         Console.WriteLine("=== ENROLL SUBJECT ===");
@@ -244,10 +251,10 @@ class Program
     // 3 ENTER GRADES
     // =========================
 
-    static void EnterGrades(string file)
+    static void EnterGrades(string grad) // the string variable file is use for connecting to EnrollSubject  
     {
 
-        List<grade> grades  = new List<grade>();
+        List<grade> grades = new List<grade>();
         Console.Clear();
         Console.WriteLine("=== ENTER GRADES ===");
 
@@ -263,34 +270,34 @@ class Program
             Console.WriteLine("Error please try again");
         }
 
-            Console.Write("2nd Semester Grade: ");
+        Console.Write("2nd Semester Grade: ");
         if (!double.TryParse(Console.ReadLine(), out double second))
         {
             Console.WriteLine("Error please try again");
         }
-            double average = (first + second) / 2;
+        double average = (first + second) / 2;
 
         grade g = new grade
         {
-          student_1 = student,
-          stude_ID = studeID,
-          first_1 = first,
-          second_2 = second,
-          average_1 = average,
+            student_1 = student,
+            stude_ID = studeID,
+            first_1 = first,
+            second_2 = second,
+            average_1 = average,
         };
         grades.Clear();
         grades.Add(g);
 
-        using (StreamWriter writer = new StreamWriter(file, true))
+        using (StreamWriter writer = new StreamWriter(grad, true)) // The file is use to connect to enter grades 
             foreach (var score in grades)
             {
-              writer.WriteLine("===== GRADES =====");
-              writer.WriteLine("Student: " + score.student_1);
-              writer.WriteLine("Student_ID: " +score.stude_ID);
-              writer.WriteLine("1st Sem: " + score.first_1);
-              writer.WriteLine("2nd Sem: " + score.second_2);
-              writer.WriteLine("Average: " + score.average_1);
-              writer.WriteLine("------------------------");
+                writer.WriteLine("===== GRADES =====");
+                writer.WriteLine("Student: " + score.student_1);
+                writer.WriteLine("Student_ID: " + score.stude_ID);
+                writer.WriteLine("1st Sem: " + score.first_1);
+                writer.WriteLine("2nd Sem: " + score.second_2);
+                writer.WriteLine("Average: " + score.average_1);
+                writer.WriteLine("------------------------");
             }
 
         Console.WriteLine("Grades Saved!");
@@ -300,7 +307,7 @@ class Program
     // 4 SHOW GRADES
     // =========================
 
-    static void ShowGrades(string file)
+    static void ShowGrades(string grad) //  The string is use to connect to enter grades
     {
         Console.Clear();
         Console.WriteLine("=== SHOW STUDENT GRADES ===");
@@ -308,9 +315,9 @@ class Program
         Console.Write("Enter Student Name: ");
         string search = Console.ReadLine();
 
-        if (File.Exists(file))
+        if (File.Exists(grad))
         {
-            using (StreamReader reader = new StreamReader(file))
+            using (StreamReader reader = new StreamReader(grad)) // is use to connect EnterGrades
             {
                 string line;
 
@@ -322,7 +329,7 @@ class Program
                         Console.WriteLine(line);
                         Console.WriteLine(reader.ReadLine());
                         Console.WriteLine(reader.ReadLine());
-                        Console.WriteLine(reader.ReadLine());
+                        Console.WriteLine(reader.ReadLine());// when you keep pressing showgrade it will stop the input of the line to go down  
                     }
                 }
             }
@@ -346,7 +353,7 @@ class Program
             Directory.CreateDirectory(mainFolder);
             Console.WriteLine("Main Folder Created!");
         }
-        else 
+        else
         {
             Console.WriteLine("Folder already exists.");
         }
