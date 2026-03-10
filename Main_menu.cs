@@ -13,7 +13,7 @@ class Program
 
         string mainFolder = Path.Combine(
        Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
-       "SchoolSyst" // The name of the folder  EnterGradesvariable
+       "SchoolSystem" // The name of the folder  EnterGradesvariable
 
 
    );
@@ -370,4 +370,5 @@ class Program
         }
     }
 }
+
 
